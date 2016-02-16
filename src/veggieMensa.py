@@ -247,6 +247,10 @@ def parseDay(day):
         elif d == 'tomorrow':
             tomorrow = today + 1
             return (tomorrow % 7, week + tomorrow / 7)
+        elif d == 'curweek':
+            return(None, week)
+        elif d == 'nextweek':
+            return(None, week + 1)
         else:
             if d.startswith('mon'):
                 n = 0
@@ -302,7 +306,9 @@ def main():
     parser.add_argument('-g', '--guest', action='store_true', default=False,
             help='Show guest prices.')
     parser.add_argument('day', nargs='?',
-            help='Show menu only for this day.')
+            choices=[ 'mon','tue','wed','thu','fri',
+                'today','tomorrow','curweek','nextweek' ],
+            help='Show menu only for specified day(s). Defaults to curweek.')
     args = parser.parse_args()
     #
     day,week = parseDay(args.day)
