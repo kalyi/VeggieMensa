@@ -182,10 +182,6 @@ def parseCSV(lines):
             menu[date] = [ dish ]
     return menu
 
-def prettyPrintDishes(dishes, markedIngredients, allergens, prices):
-    for dish in dishes:
-        print('*   {}'.format(dish.prettyPrint(markedIngredients, allergens,
-            prices)))
 
 def prettyPrintDay(menu, day, checkVegetarian, checkVegan, markedIngredients,
         allergens, prices):
@@ -206,20 +202,18 @@ def prettyPrintDay(menu, day, checkVegetarian, checkVegan, markedIngredients,
             byCategory['dessert'].append(dish)
         else:
             byCategory['unknown'].append(dish)
-    print('* Suppen:')
-    prettyPrintDishes(byCategory['soup'], markedIngredients, allergens, prices)
-    print('*\n* Hauptgerichte:')
-    prettyPrintDishes(byCategory['main'], markedIngredients, allergens, prices)
-    print('*\n* Beilagen:')
-    prettyPrintDishes(byCategory['side'], markedIngredients, allergens, prices)
-    print('*\n* Nachspeisen:')
-    prettyPrintDishes(byCategory['dessert'], markedIngredients, allergens,
-            prices)
-    if len(byCategory['unknown']) > 0:
-        print('*\n* Sonstiges:')
-        prettyPrintDishes(byCategory['unknown'], markedIngredients, allergens,
-                prices)
-    print('**********\n')
+    categories = [ ('Suppen', byCategory['soup']),
+            ('Hauptgerichte',byCategory['main']),
+            ('Beilagen',byCategory['side']),
+            ('Nachspeisen',byCategory['dessert']),
+            ('Sonstiges',byCategory['unknown']) ]
+    for n, dishes in categories:
+        if len(dishes) > 0:
+            print('*\n* {}:'.format(n))
+            for dish in dishes:
+                print('*   {}'.format(dish.prettyPrint(markedIngredients,
+                    allergens, prices)))
+    print('*\n**********\n')
 
 def prettyPrint(menu, day, checkVegetarian, checkVegan, markedIngredients,
         allergens, prices):
@@ -318,9 +312,9 @@ def main():
     showAllergens = parseFilter(args.allergen, allergens)
     prices = (args.student, args.employee, args.guest)
     #
-    print("{} menu for week {} at {}:".format(
+    print("\n{} menu for week {} at {}".format(
         'Vegan' if args.vegan else 'Vegetarian' if not args.all else 'Complete',
-        args.week, canteens[args.canteen][1]))
+        week, canteens[args.canteen][1]))
     if True in prices:
         print('Prices are for {}.'.format('/'.join(
             [ x for (x,b) in zip(['students','employees','guests'], prices)
