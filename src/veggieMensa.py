@@ -120,6 +120,9 @@ class Dish:
     def isVegan(self):
         return 'VG' in self.tags
 
+    def isOrganic(self):
+        return 'B' in self.tags or 'bio' in self.name.lower()
+
     def formatMarkedIngredients(self,select=None):
         if len(self.markedIngredients) == 0:
             return ''
@@ -182,15 +185,15 @@ def parseCSV(lines):
             menu[date] = [ dish ]
     return menu
 
-
-def prettyPrintDay(menu, day, checkVegetarian, checkVegan, markedIngredients,
-        allergens, prices):
+def prettyPrintDay(menu, day, checkVegetarian, checkVegan, checkOrganic,
+        markedIngredients, allergens, prices):
     print('*** {} ***'.format(datetime.datetime.strftime(day, '%A, %d.%m.%Y')))
     byCategory = { 'soup' : [], 'main' : [], 'side': [],
             'dessert' : [], 'unknown': [] }
     for dish in menu[day]:
         if (checkVegetarian and not dish.isVegetarian()) or (
-                checkVegan and not dish.isVegan()):
+                checkVegan and not dish.isVegan()) or (
+                checkOrganic and not dish.isOrganic()):
             continue
         if dish.isSoup():
             byCategory['soup'].append(dish)
@@ -215,17 +218,17 @@ def prettyPrintDay(menu, day, checkVegetarian, checkVegan, markedIngredients,
                     allergens, prices)))
     print('*\n**********\n')
 
-def prettyPrint(menu, day, checkVegetarian, checkVegan, markedIngredients,
-        allergens, prices):
+def prettyPrint(menu, day, checkVegetarian, checkVegan, checkOrganic,
+        markedIngredients, allergens, prices):
     days = sorted(menu.keys())
     if day is None:
         for day in days:
             prettyPrintDay(menu, day, checkVegetarian, checkVegan,
-                    markedIngredients, allergens, prices)
+                    checkOrganic, markedIngredients, allergens, prices)
     else:
         if day in range(len(days)):
             prettyPrintDay(menu, days[day], checkVegetarian, checkVegan,
-                    markedIngredients, allergens, prices)
+                    checkOrganic, markedIngredients, allergens, prices)
         else:
             print("No menu for this day.")
 
@@ -287,6 +290,8 @@ def main():
             help='Do not filter non-vegetarian dishes.')
     parser.add_argument('-v', '--vegan', action='store_true', default=False,
             help='Show only vegan dishes.')
+    parser.add_argument('-o', '--organic', action='store_true', default=False,
+            help='Show only organic dishes.')
     parser.add_argument('-m', '--marked', action='append', default=[ ],
             help='Show specified marked ingredient. Use \'all\' to show all.')
     parser.add_argument('-l', '--allergen', action='append', default=[ ],
@@ -315,13 +320,16 @@ def main():
     print("\n{} menu for week {} at {}".format(
         'Vegan' if args.vegan else 'Vegetarian' if not args.all else 'Complete',
         week, canteens[args.canteen][1]))
+    if args.organic:
+        print('Showing only organic dishes.')
     if True in prices:
         print('Prices are for {}.'.format('/'.join(
             [ x for (x,b) in zip(['students','employees','guests'], prices)
                 if b ])))
     print()
     prettyPrint(parseCSV(getCSV(args.canteen, week)), day,
-        not args.all, args.vegan, showIngredients, showAllergens, prices)
+        not args.all, args.vegan, args.organic,
+        showIngredients, showAllergens, prices)
 
 if __name__ == "__main__":
     main()
