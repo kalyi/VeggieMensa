@@ -249,23 +249,12 @@ def parseDay(day):
         elif d == 'nextweek':
             return(None, week + 1)
         else:
-            if d.startswith('mon'):
-                n = 0
-            elif d.startswith('tue'):
-                n = 1
-            elif d.startswith('wed'):
-                n = 2
-            elif d.startswith('thu'):
-                n = 3
-            elif d.startswith('fri'):
-                n = 4
-            elif d.startswith('sat'):
-                n = 5
-            elif d.startswith('sun'):
-                n = 6
-            else:
-                return (None, week)
-            return (n, week if n >= today else week + 1)
+            mapDays = zip(['mon','tue','wed','thu','fri','sat','sun'],
+                    range(0,7))
+            for s, n in mapDays:
+                if d.startswith(s):
+                    return (n, week if n >= today else week + 1)
+            return (None, week)
 
 def parseFilter(selected, options):
     if 'all' in selected:
@@ -279,7 +268,7 @@ def parseFilter(selected, options):
 
 def main():
     parser = argparse.ArgumentParser(
-            description='Retrieves and filters menus for STWNO canteens.')
+            description='Retrieves and filters menus of STWNO canteens.')
     parser.add_argument('-c', '--canteen', action='store',
             choices=list(canteens.keys()), default='pa',
             help='Select canteen. Type {}. \

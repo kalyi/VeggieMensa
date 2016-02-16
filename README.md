@@ -13,7 +13,7 @@ usage: veggieMensa.py [-h] [-c {pa-nk,rgbg,pa}] [-a] [-v] [-o] [-m MARKED]
                       [-l ALLERGEN] [-w WEEK] [-s] [-e] [-g]
                       [{mon,tue,wed,thu,fri,today,tomorrow,curweek,nextweek}]
 
-Retrieves and filters menus for STWNO canteens.
+Retrieves and filters menus of STWNO canteens.
 
 positional arguments:
   {mon,tue,wed,thu,fri,today,tomorrow,curweek,nextweek}
