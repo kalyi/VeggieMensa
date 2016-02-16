@@ -235,7 +235,8 @@ def prettyPrint(menu, day, checkVegetarian, checkVegan, markedIngredients,
         else:
             print("No menu for this day.")
 
-def parseDay(day, week):
+def parseDay(day):
+    week = datetime.date.today().isocalendar()[1]
     if day is None:
         return (None, week)
     else:
@@ -292,8 +293,7 @@ def main():
             help='Show specified marked ingredient. Use \'all\' to show all.')
     parser.add_argument('-l', '--allergen', action='append', default=[ ],
             help='Show specified allergen. Use \'all\' to show all.')
-    parser.add_argument('-w', '--week', action='store',
-            default=datetime.date.today().isocalendar()[1], type=int,
+    parser.add_argument('-w', '--week', action='store', type=int,
             help='Show menu for specified week. Defaults to current week.')
     parser.add_argument('-s', '--student', action='store_true', default=False,
             help='Show student prices.')
@@ -305,7 +305,9 @@ def main():
             help='Show menu only for this day.')
     args = parser.parse_args()
     #
-    day,week = parseDay(args.day, args.week)
+    day,week = parseDay(args.day)
+    if args.week is not None:
+        week = args.week
     showIngredients = parseFilter(args.marked, markedIngredients)
     showAllergens = parseFilter(args.allergen, allergens)
     prices = (args.student, args.employee, args.guest)
