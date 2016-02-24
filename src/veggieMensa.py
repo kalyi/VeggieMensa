@@ -247,14 +247,14 @@ def parseDay(day):
     else:
         d = day.lower()
         today = datetime.date.today().weekday()
-        if d == 'today':
+        if d.startswith('tod'):
             return (today, week)
-        elif d == 'tomorrow':
+        elif d.startswith('tom'):
             tomorrow = today + 1
-            return (tomorrow % 7, week + tomorrow / 7)
-        elif d == 'curweek':
+            return (tomorrow % 7, week + tomorrow // 7)
+        elif d.startswith('cur'):
             return(None, week)
-        elif d == 'nextweek':
+        elif d.startswith('nex'):
             return(None, week + 1)
         else:
             mapDays = zip(['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'],
@@ -306,10 +306,13 @@ def main():
                         help='Show employee prices.')
     parser.add_argument('-g', '--guest', action='store_true', default=False,
                         help='Show guest prices.')
-    parser.add_argument('day', nargs='?',
+    parser.add_argument('day', nargs='?', type = lambda s: s.lower()[:3],
                         choices=['mon', 'tue', 'wed', 'thu', 'fri',
-                                 'today', 'tomorrow', 'curweek', 'nextweek'],
+                                 'tod', 'tom', 'cur', 'nex'],
                         help='Show menu only for specified day(s). ' +
+                        'Currently supported: mon(day), tue(sday), ' +
+                        'wed(nesday), thu(rsday), fri(day), ' +
+                        'tod(ay), tom(orrow), cur(week), nex(tweek). ' +
                         'Defaults to curweek.')
     args = parser.parse_args()
     #
