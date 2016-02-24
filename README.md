@@ -11,14 +11,16 @@ Mensa Uni Regensburg.
 $ ./veggieMensa -h
 usage: veggieMensa.py [-h] [-c {pa-nk,rgbg,pa}] [-a] [-v] [-o] [-m MARKED]
                       [-l ALLERGEN] [-w WEEK] [-s] [-e] [-g]
-                      [{mon,tue,wed,thu,fri,today,tomorrow,curweek,nextweek}]
+                      [{mon,tue,wed,thu,fri,tod,tom,cur,nex}]
 
 Retrieves and filters menus of STWNO canteens.
 
 positional arguments:
-  {mon,tue,wed,thu,fri,today,tomorrow,curweek,nextweek}
-                        Show menu only for specified day(s). Defaults to
-                        curweek.
+  {mon,tue,wed,thu,fri,tod,tom,cur,nex}
+                        Show menu only for specified day(s). Currently
+                        supported: mon(day), tue(sday), wed(nesday),
+                        thu(rsday), fri(day), tod(ay), tom(orrow), cur(week),
+                        nex(tweek). Defaults to curweek.
 
 optional arguments:
   -h, --help            show this help message and exit
