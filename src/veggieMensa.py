@@ -202,7 +202,7 @@ def parseCSV(lines):
     for row in spamreader:
         if len(row) < 5:
             continue
-        date = datetime.datetime.strptime(row[0], '%d.%m.%Y')
+        date = datetime.datetime.strptime(row[0], '%d.%m.%Y').date()
         dish = Dish(row[3], row[2], row[4], (row[6], row[7], row[8]))
         if date in menu.keys():
             menu[date].append(dish)
@@ -213,7 +213,7 @@ def parseCSV(lines):
 
 def prettyPrintDay(menu, day, checkVegetarian, checkVegan, checkOrganic,
                    markedIngredients, allergens, prices):
-    print('*** {} ***'.format(datetime.datetime.strftime(day, '%A, %d.%m.%Y')))
+    print('*** {} ***'.format(day.strftime('%A, %d.%m.%Y')))
     byCategory = {'soup': [], 'main': [], 'side': [],
                   'dessert': [], 'unknown': []}
     for dish in menu[day]:
@@ -253,8 +253,8 @@ def prettyPrint(menu, day, checkVegetarian, checkVegan, checkOrganic,
             prettyPrintDay(menu, day, checkVegetarian, checkVegan,
                            checkOrganic, markedIngredients, allergens, prices)
     else:
-        if day in range(len(days)):
-            prettyPrintDay(menu, days[day], checkVegetarian, checkVegan,
+        if day in days:
+            prettyPrintDay(menu, day, checkVegetarian, checkVegan,
                            checkOrganic, markedIngredients, allergens, prices)
         else:
             print("No menu for this day.")
@@ -266,12 +266,12 @@ def parseDay(day):
         return (None, week)
     else:
         d = day.lower()
-        today = datetime.date.today().weekday()
+        today = datetime.date.today()
         if d.startswith('tod'):
             return (today, week)
         elif d.startswith('tom'):
-            tomorrow = today + 1
-            return (tomorrow % 7, week + tomorrow // 7)
+            tomorrow = today + datetime.timedelta(days=1)
+            return (tomorrow, week + tomorrow.weekday() // 7)
         elif d.startswith('cur'):
             return(None, week)
         elif d.startswith('nex'):
@@ -281,7 +281,7 @@ def parseDay(day):
                           range(0, 7))
             for s, n in mapDays:
                 if d.startswith(s):
-                    return (n, week if n >= today else week + 1)
+                    return (today + datetime.timedelta(days=n), week if n >= today.weekday() else week + 1)
             return (None, week)
 
 
