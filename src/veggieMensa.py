@@ -127,6 +127,18 @@ class Dish:
     def isOrganic(self):
         return 'B' in self.tags or 'bio' in self.name.lower()
 
+    def containsPork(self):
+        return 'S' in self.tags
+
+    def containsBeef(self):
+        return 'R' in self.tags
+
+    def containsChicken(self):
+        return 'G' in self.tags
+
+    def containsFish(self):
+        return 'F' in self.tags
+
     def formatMarkedIngredients(self, select=None):
         if len(self.markedIngredients) == 0:
             return ''
@@ -148,12 +160,20 @@ class Dish:
             [p for (p, b) in zip(self.prices, select) if b]))
             if True in select else '')
 
+    def formatAnimals(self):
+        #animals = { 'S' : '\U0001f416', 'R':  '\U0001f403', 'F': '\U0001f427', 'G': '\U0001f424' }
+        animals = { 'S' : '[Schweinefleisch]', 'R':  '[Rindfleisch]', 'F': '[Fisch]', 'G': '[Geflügel]' }
+        return [ animals[k] for k in self.tags if k in animals ]
+
+
     def prettyPrint(self, ingredients, allergens, prices):
         mIng = self.formatMarkedIngredients(ingredients)
         allerg = self.formatAllergens(allergens)
         price = self.formatPrice(prices)
+        animals = self.formatAnimals()
         s = ("{} {}{}".format(self.name, mIng, allerg)
              if len(mIng) + len(allerg) > 0 else self.name)
+        s = '{} {}'.format(s, ' '.join(animals)) if len(animals) > 0 else s
         return '{}: {}'.format(s, price) if len(price) > 0 else s
 
     def __str__(self):
