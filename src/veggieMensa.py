@@ -161,10 +161,15 @@ class Dish:
             if True in select else '')
 
     def formatAnimals(self):
-        #animals = { 'S' : '\U0001f416', 'R':  '\U0001f403', 'F': '\U0001f427', 'G': '\U0001f424' }
-        animals = { 'S' : '[Schweinefleisch]', 'R':  '[Rindfleisch]', 'F': '[Fisch]', 'G': '[Geflügel]' }
-        return [ animals[k] for k in self.tags if k in animals ]
-
+        # animals = {'S': '\U0001f416',
+        #            'R': '\U0001f403',
+        #            'F': '\U0001f427',
+        #            'G': '\U0001f424'}
+        animals = {'S': '[Schweinefleisch]',
+                   'R': '[Rindfleisch]',
+                   'F': '[Fisch]',
+                   'G': '[Geflügel]'}
+        return [animals[k] for k in self.tags if k in animals]
 
     def prettyPrint(self, ingredients, allergens, prices):
         mIng = self.formatMarkedIngredients(ingredients)
@@ -281,7 +286,8 @@ def parseDay(day):
                           range(0, 7))
             for s, n in mapDays:
                 if d.startswith(s):
-                    return (today + datetime.timedelta(days=n), week if n >= today.weekday() else week + 1)
+                    return (today + datetime.timedelta(days=n),
+                            week if n >= today.weekday() else week + 1)
             return (None, week)
 
 
@@ -326,7 +332,7 @@ def main():
                         help='Show employee prices.')
     parser.add_argument('-g', '--guest', action='store_true', default=False,
                         help='Show guest prices.')
-    parser.add_argument('day', nargs='?', type = lambda s: s.lower()[:3],
+    parser.add_argument('day', nargs='?', type=lambda s: s.lower()[:3],
                         choices=['mon', 'tue', 'wed', 'thu', 'fri',
                                  'tod', 'tom', 'cur', 'nex'],
                         help='Show menu only for specified day(s). ' +
