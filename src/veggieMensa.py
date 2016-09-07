@@ -281,7 +281,11 @@ def parseDay(day):
                           range(0, 7))
             for s, n in mapDays:
                 if d.startswith(s):
-                    return (today + datetime.timedelta(days=n), week if n >= today.weekday() else week + 1)
+                    day_diff = n - today.weekday()
+                    if day_diff < 0:
+                        day_diff += 7
+                    target = today + datetime.timedelta(days=day_diff)
+                    return (target, target.isocalendar()[1])
             return (None, week)
 
 
