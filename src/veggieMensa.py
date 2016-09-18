@@ -186,7 +186,7 @@ class Dish:
         allerg = self.formatAllergens()
         if len(mIng) + len(allerg) > 0:
             return "{} {}{} : {}".format(
-                    self.name, mIng, allerg, self.formatPrice())
+                self.name, mIng, allerg, self.formatPrice())
         return "{} : {}".format(self.name, self.formatPrice())
 
 
@@ -307,7 +307,7 @@ def parseFilter(selected, options):
 
 def main():
     parser = argparse.ArgumentParser(
-            description='Retrieves and filters menus of STWNO canteens.')
+        description='Retrieves and filters menus of STWNO canteens.')
     parser.add_argument('-c', '--canteen', action='store',
                         choices=list(canteens.keys()), default='pa',
                         help='Select canteen. Type {}. \
