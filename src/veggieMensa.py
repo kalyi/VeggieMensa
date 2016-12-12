@@ -276,7 +276,7 @@ def parseDay(day):
             return (today, week)
         elif d.startswith('tom'):
             tomorrow = today + datetime.timedelta(days=1)
-            return (tomorrow, week + tomorrow.weekday() // 7)
+            return (tomorrow, week + 1 if tomorrow.weekday() == 0 else week)
         elif d.startswith('cur'):
             return(None, week)
         elif d.startswith('nex'):
