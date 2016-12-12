@@ -92,7 +92,7 @@ class Dish:
         if name.endswith(')'):
             i = name.rfind('(')
             if i > 0:
-                extra = name[i+1:len(name)-1]
+                extra = name[i + 1:len(name) - 1]
                 name = name[0:i]
                 self.parseExtra(extra)
         # clean up whitespaces
