@@ -127,6 +127,9 @@ class Dish:
     def isOrganic(self):
         return 'B' in self.tags or 'bio' in self.name.lower()
 
+    def isMensaVital(self):
+        return 'MV' in self.tags
+
     def containsPork(self):
         return 'S' in self.tags
 
@@ -160,25 +163,28 @@ class Dish:
             [p for (p, b) in zip(self.prices, select) if b]))
             if True in select else '')
 
-    def formatAnimals(self):
+    def formatTags(self):
         # animals = {'S': '\U0001f416',
         #            'R': '\U0001f403',
         #            'F': '\U0001f427',
         #            'G': '\U0001f424'}
-        animals = {'S': '[Schweinefleisch]',
-                   'R': '[Rindfleisch]',
-                   'F': '[Fisch]',
-                   'G': '[Geflügel]'}
-        return [animals[k] for k in self.tags if k in animals]
+        tags = {'S': 'Schweinefleisch',
+                'R': 'Rindfleisch',
+                'F': 'Fisch',
+                'G': 'Geflügel',
+                'VG': 'vegan',
+                'MV': 'Mensa Vital'}
+        return [tags[k] for k in self.tags if k in tags]
 
     def prettyPrint(self, ingredients, allergens, prices):
         mIng = self.formatMarkedIngredients(ingredients)
         allerg = self.formatAllergens(allergens)
         price = self.formatPrice(prices)
-        animals = self.formatAnimals()
+        tags = self.formatTags()
         s = ("{} {}{}".format(self.name, mIng, allerg)
              if len(mIng) + len(allerg) > 0 else self.name)
-        s = '{} {}'.format(s, ' '.join(animals)) if len(animals) > 0 else s
+        s = '{} {}'.format(s,
+                           '[' + ', '.join(tags) + ']') if len(tags) > 0 else s
         return '{}: {}'.format(s, price) if len(price) > 0 else s
 
     def __str__(self):
