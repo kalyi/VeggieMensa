@@ -1,10 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf8; -*-
 #
-# Copyright (C) 2016 : Kathrin Hanauer, Olaf Leßenich
-#
-# Checks whether a file contains the specified license header and,
-# if negative, tries to update it.
+# Copyright (C) 2016-2017 : Kathrin Hanauer, Olaf Leßenich
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
