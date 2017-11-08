@@ -32,8 +32,9 @@ stwnoUrl = "http://www.stwno.de/infomax/daten-extern/csv/{}/{}.csv"
 
 canteens = {
     'pa': ('UNI-P', 'Mensa Uni Passau'),
-    'pa-nk': ('Cafeteria Nikolakloster', 'Uni Passau Cafeteria Nikolakloster'),
-    'rgbg': ('UNI-R', 'Mensa Uni Regensburg (mittags)')
+    'pa-nk': ('Cafeteria-Nikolakloster', 'Uni Passau Cafeteria Nikolakloster'),
+    'rgbg': ('UNI-R', 'Mensa Uni Regensburg (mittags)'),
+    'deg': ('HS-DEG', 'Mensa TH Deggendorf')
 }
 
 markedIngredients = {
